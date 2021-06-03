@@ -9,9 +9,7 @@ class GetBook extends React.Component{
     option: this.props.book.shelf === undefined ? 'none' : this.props.book.shelf
   }
 
-  imageurl = this.props.book.imageLinks === undefined ? '' : `url("${this.props.book.imageLinks.thumbnail}")`
-  authors = this.props.book.authors === undefined ? [] : this.props.book.authors
-
+ 
   async updateOptions(book,newShelf){
       await BooksAPI.update(book,newShelf)
       .then((res)=>(console.log("updated book: ",res)))
@@ -30,7 +28,8 @@ class GetBook extends React.Component{
    render(){ 
      return (<div className="book">
                           <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: this.imageurl }}></div>
+                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage:
+                               (this.props.book.imageLinks === undefined ? '' : `url("${this.props.book.imageLinks.thumbnail}")`)}}></div>
                             
                             <div className="book-shelf-changer">
                               <select value ={this.state.option} onChange={(event)=>( this.updateOptions(this.props.book, event.target.value))}>
@@ -43,7 +42,7 @@ class GetBook extends React.Component{
                             </div>
                           </div>
                           <div className="book-title">{this.props.book.title}</div>
-                          <div className="book-authors">{this.authors.map((value, index) => (<p key = {index}>{value}</p>))}</div>
+                          <div className="book-authors">{(this.props.book.authors === undefined ? [] : this.props.book.authors).map((value, index) => (<p key = {index}>{value}</p>))}</div>
                         </div>
         )}
 }
