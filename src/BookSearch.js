@@ -1,42 +1,44 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import GetBook from './Book'
 
-let searchedBooks =[]
 
-function BookSearch(){
+class BookSearch extends React.Component{
 
-  async function displaySearch(term){
-    await BooksAPI.search(term)
-      .then((res)=>(/*updateBooks(res)*/ searchedBooks = res))
-      .then((res)=>(console.log("search results:",res)))
+  state={
+      searchedBooks: [],
+      empty: 0
   }
 
- // const [searchedBooks, updateBooks] = useState([])
+  async displaySearch(term){
+    term === '' ? 
+    (setTimeout(()=>(this.setState({searchedBooks: [], empty: 0})), 1000))
+    :
+    (await BooksAPI.search(term)
+      .then((res)=>( 
+        res.error === undefined ? (this.setState({searchedBooks: res, empty: 0})) : (this.setState({searchedBooks: [], empty:1}))
+        ))
+      )
+  }
 
-    return (<div className="search-books">
+    render(){
+      return (<div className="search-books">
             <div className="search-books-bar">
               <Link to="/" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author" onInput={(event)=>(displaySearch(event.target.value))}/>
+                <input type="text" placeholder="Search by title or author" onInput={(event)=>(this.displaySearch(event.target.value))}/>
 
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                {searchedBooks.map((value,index)=> (<li>{GetBook(value)}</li>))}
+                {console.log("searched books: ", this.state.searchedBooks) , this.state.empty === 1 ? <div>we couldn't find any books sadly</div> : 
+                this.state.searchedBooks.map((value,index)=> (<li key= {index} ><GetBook  book={value} updateParent={this.props.updateBook} confirmBook = {this.props.confirm}/></li>))}
               </ol>
             </div>
           </div>)
+          }
 }
 
 export default BookSearch

@@ -16,7 +16,7 @@ function BookShelfs(books, update){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "currentlyReading")
-                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
+                      .map((value,index)=> (<li key={index}><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>
@@ -25,7 +25,7 @@ function BookShelfs(books, update){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "wantToRead")
-                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
+                      .map((value,index)=> (<li key={index}><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>
@@ -34,7 +34,7 @@ function BookShelfs(books, update){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "read")
-                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
+                      .map((value,index)=> (<li key={index}><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>

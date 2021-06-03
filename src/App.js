@@ -9,20 +9,17 @@ import BookShelfs from './Bookshelfs'
 
 class BooksApp extends React.Component {
   state = {
-    allbooks: [],
-    reRender: 0
+    allbooks: []
   }
-
-  update= ()=>(
-    this.getAllBooks(),
-    console.log("triggered"),
-    this.setState({reRender: 3})
-  )
-
-async getAllBooks(){
+  
+  getAllBooks = async () =>(
       await BooksAPI.getAll()
       .then((res)=>(this.setState({allbooks: res})))
 
+    )
+
+    bookAlreadyIn = (book) => {
+     return (this.state.allbooks.filter(x => x.title === book.title)[0])
     }
 
    componentDidMount() {
@@ -33,9 +30,9 @@ async getAllBooks(){
     return (
       <div className="app">
         <Route exact path = '/' render={()=>(
-        <div>  {BookShelfs(this.state.allbooks, this.update)}</div>)}></Route>
+        <div>  {BookShelfs(this.state.allbooks, this.getAllBooks)}</div>)}></Route>
 
-          <Route path = '/search' render ={()=>(BookSearch())}></Route>
+          <Route path = '/search' render ={()=>(<BookSearch updateBook= {this.getAllBooks} confirm = {this.bookAlreadyIn}/>)}></Route>
         
       </div>
     )
