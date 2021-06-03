@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import GetBook from './Book'
 
-function BookShelfs(books){
+function BookShelfs(books, update){
   console.log("all books:",books)
 
     return(<div className="list-books">
@@ -16,7 +16,7 @@ function BookShelfs(books){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "currentlyReading")
-                      .map((value,index)=> (<li>{GetBook(value)}</li>))}
+                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>
@@ -25,7 +25,7 @@ function BookShelfs(books){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "wantToRead")
-                      .map((value,index)=> (<li>{GetBook(value)}</li>))}
+                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>
@@ -34,7 +34,7 @@ function BookShelfs(books){
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "read")
-                      .map((value,index)=> (<li>{GetBook(value)}</li>))}
+                      .map((value,index)=> (<li><GetBook book={value} updateParent ={update}/></li>))}
                     </ol>
                   </div>
                 </div>

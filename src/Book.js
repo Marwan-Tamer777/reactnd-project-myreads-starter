@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as BooksAPI from './BooksAPI'
 
-async function updateOptions(book,newShelf){
+
+
+class GetBook extends React.Component{
+
+  state = {
+    option: this.props.book.shelf
+  }
+
+  async updateOptions(book,newShelf){
   await BooksAPI.update(book,newShelf)
       .then((res)=>(console.log("updated book: ",res)))
-}
-
-function GetBook(bookData){
-    const [option, changeOption] = useState('move')
-
-    return (<div className="book">
+      .then(()=>(this.setState({"option":newShelf})))
+      .then(this.props.updateParent)
+  }
+   render(){ return (<div className="book">
                           <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${bookData.imageLinks.thumbnail}")` }}></div>
+                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")` }}></div>
                             <div className="book-shelf-changer">
-                              <select value ={option} onChange={(event)=>(updateOptions(bookData, event.target.value), changeOption(event.target.value))}>
+                              <select value ={this.state.option} onChange={(event)=>(this.updateOptions(this.props.book, event.target.value))}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -22,10 +28,10 @@ function GetBook(bookData){
                               </select>
                             </div>
                           </div>
-                          <div className="book-title">{bookData.title}</div>
-                          <div className="book-authors">{bookData.authors.map((value, index) => (<p>{value}</p>))}</div>
+                          <div className="book-title">{this.props.book.title}</div>
+                          <div className="book-authors">{this.props.book.authors.map((value, index) => (<p>{value}</p>))}</div>
                         </div>
-        )
+        )}
 }
 
 export default GetBook
