@@ -30,7 +30,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path = '/' render={()=>(
-        <div>  {BookShelfs(this.state.allbooks, this.getAllBooks)}</div>)}></Route>
+        <div>  <BookShelfs books={this.state.allbooks} update={this.getAllBooks} /></div>)}></Route>
 
           <Route path = '/search' render ={()=>(<BookSearch updateBook= {this.getAllBooks} confirm = {this.bookAlreadyIn}/>)}></Route>
         

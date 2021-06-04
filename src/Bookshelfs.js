@@ -2,7 +2,8 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import GetBook from './Book'
 
-function BookShelfs(books, update){
+function BookShelfs(props){
+  const {books, update} = props
   console.log("all books:",books)
 
     return(<div className="list-books">
