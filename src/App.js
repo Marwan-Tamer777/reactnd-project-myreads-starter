@@ -9,15 +9,14 @@ import BookShelfs from './Bookshelfs'
 
 class BooksApp extends React.Component {
   state = {
-    allbooks: []
+    allbooks:[]
   }
-  
+
   getAllBooks = async () =>(
       await BooksAPI.getAll()
       .then((res)=>(this.setState({allbooks: res})))
 
     )
-
     bookAlreadyIn = (book) => {
      return (this.state.allbooks.filter(x => x.title === book.title)[0])
     }
@@ -30,7 +29,9 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path = '/' render={()=>(
-        <div>  <BookShelfs books={this.state.allbooks} update={this.getAllBooks} /></div>)}></Route>
+        <div>  <BookShelfs books={this.state.allbooks} update={this.getAllBooks} /></div>)}>
+          
+        </Route>
 
           <Route path = '/search' render ={()=>(<BookSearch updateBook= {this.getAllBooks} confirm = {this.bookAlreadyIn}/>)}></Route>
         
